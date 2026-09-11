@@ -1,0 +1,74 @@
+[
+  {
+    "id": "daily-dhikr",
+    "name": "أذكار اليوم والليلة وجوامع التسبيح",
+    "shortName": "أذكار اليوم والليلة",
+    "icon": "Sun",
+    "description": "الأوراد النبوية الحافظة في الصباح والمساء، أذكار النوم والاستيقاظ، والخروج، والسوق.",
+    "colorClasses": "bg-emerald-50 text-emerald-700 border-emerald-200"
+  },
+  {
+    "id": "prayers-mosques",
+    "name": "صلوات النوافل وفضائل الفرائض والمساجد",
+    "shortName": "الصلوات والمساجد",
+    "icon": "Compass",
+    "description": "السنن الرواتب، صلاة الضحى، قيام الليل، الوتر، فضل الجماعة، مسجد قباء والمساجد الثلاثة.",
+    "colorClasses": "bg-amber-50 text-amber-700 border-amber-200"
+  },
+  {
+    "id": "expiation-repentance",
+    "name": "كفارات الذنوب وموجبات الجنة والتوبة",
+    "shortName": "المغفرة والتوبة",
+    "icon": "Sparkles",
+    "description": "سيد الاستغفار، محو الخطايا كزبد البحر، كفارة المجلس، التوبة المتجددة، وحسن الخاتمة.",
+    "colorClasses": "bg-teal-50 text-teal-700 border-teal-200"
+  },
+  {
+    "id": "relief-ruqyah",
+    "name": "تفريج الكروب وقضاء الديون والرقية الشرعية",
+    "shortName": "تفريج الكروب والرقية",
+    "icon": "ShieldCheck",
+    "description": "دعوة ذي النون، دعاء الكرب، كفاية الهم بالصلاة على النبي ﷺ، رقية جبريل، وسداد الديون.",
+    "colorClasses": "bg-cyan-50 text-cyan-700 border-cyan-200"
+  },
+  {
+    "id": "quran-virtues",
+    "name": "فضائل القرآن الكريم وسوره وآياته",
+    "shortName": "فضائل القرآن",
+    "icon": "BookOpen",
+    "description": "أعظم السور والآيات: الفاتحة، آية الكرسي، تبارك المنجية، الكهف، والإخلاص والمعوذتان.",
+    "colorClasses": "bg-lime-50 text-lime-700 border-lime-200"
+  },
+  {
+    "id": "morals-relations",
+    "name": "مكارم الأخلاق وحقوق المسلمين وصلة الأرحام",
+    "shortName": "مكارم الأخلاق",
+    "icon": "HeartHandshake",
+    "description": "حسن الخلق، كظم الغيظ، كفالة اليتيم، عيادة المريض، صلة الأرحام، والذب عن الأعراض.",
+    "colorClasses": "bg-rose-50 text-rose-700 border-rose-200"
+  },
+  {
+    "id": "charity-ongoing",
+    "name": "الصدقات والأجور الجارية المتعدية",
+    "shortName": "الصدقات والأجور الجارية",
+    "icon": "Coins",
+    "description": "السبع الجارية في القبر، سقي الماء، بناء المساجد، صدقة السر، وتشييع الجنائز.",
+    "colorClasses": "bg-indigo-50 text-indigo-700 border-indigo-200"
+  },
+  {
+    "id": "fasting-seasons",
+    "name": "الصيام والفضائل والنفحات الموسمية",
+    "shortName": "الصيام والنفحات",
+    "icon": "Moon",
+    "description": "صيام عرفة، عاشوراء، الأيام البيض، ست من شوال، وأجر حجة بصحبة النبي في عمرة رمضان.",
+    "colorClasses": "bg-purple-50 text-purple-700 border-purple-200"
+  },
+  {
+    "id": "manners-sunan",
+    "name": "الآداب النبوية والسنن العملية المهجورة",
+    "shortName": "الآداب والسنن",
+    "icon": "ScrollText",
+    "description": "السواك، رد التثاؤب، تشميت العاطس، إبطال الكوابيس، التسمية في الطعام، وأدعية الريح والمطر.",
+    "colorClasses": "bg-slate-50 text-slate-700 border-slate-200"
+  }
+]
