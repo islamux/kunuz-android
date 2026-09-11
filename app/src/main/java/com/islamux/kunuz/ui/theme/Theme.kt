@@ -36,9 +36,18 @@ fun KunuzTheme(content: @Composable () -> Unit) {
     }
 
     CompositionLocalProvider(LocalLayoutDirection provides LayoutDirection.Rtl) {
+        val textScale = LocalKunuzTextScale.current
+        val scaledBodyLarge = if (textScale == 1f) {
+            KunuzTypography
+        } else {
+            KunuzTypography.copy(
+                fontSize = KunuzTypography.fontSize * textScale,
+                lineHeight = KunuzTypography.lineHeight * textScale
+            )
+        }
         MaterialTheme(
             colorScheme = KunuzColorScheme,
-            typography = MaterialTheme.typography.copy(bodyLarge = KunuzTypography),
+            typography = MaterialTheme.typography.copy(bodyLarge = scaledBodyLarge),
             content = content
         )
     }
