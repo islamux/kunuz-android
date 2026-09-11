@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <style name="Theme.Kunuz" parent="android:Theme.Material.Light.NoActionBar">
-        <item name="android:windowBackground">#FDF9F3</item>
+        <item name="android:windowBackground">#FAF8F5</item>
         <item name="android:statusBarColor">#065F46</item>
     </style>
 </resources>

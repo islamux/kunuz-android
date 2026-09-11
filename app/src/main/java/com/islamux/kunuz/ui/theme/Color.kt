@@ -2,7 +2,7 @@ package com.islamux.kunuz.ui.theme
 
 import androidx.compose.ui.graphics.Color
 
-val KunuzBackground = Color(0xFFFDF9F3)      // #faf8f5
+val KunuzBackground = Color(0xFFFAF8F5)      // #faf8f5
 val KunuzText = Color(0xFF1C2421)            // #1c2421
 val KunuzPrimary = Color(0xFF047857)         // #047857
 val KunuzPrimaryDark = Color(0xFF065F46)     // #065f46
