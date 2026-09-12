@@ -214,6 +214,17 @@ class KunuzViewModelTest {
     }
 
     @Test
+    fun `selectChapter with forceAllTab false keeps the current tab`() {
+        val vm = createViewModel(createDataStore())
+        vm.selectTab(TabId.FAVORITES)
+
+        vm.selectChapter(ChapterId.DAILY_DHIKR, forceAllTab = false)
+
+        assertEquals(ChapterId.DAILY_DHIKR, vm.uiState.value.selectedChapter)
+        assertEquals(TabId.FAVORITES, vm.uiState.value.tab)
+    }
+
+    @Test
     fun `favorites tab shows only favorited treasures`() {
         val vm = createViewModel(createDataStore())
         vm.toggleFavorite(1)

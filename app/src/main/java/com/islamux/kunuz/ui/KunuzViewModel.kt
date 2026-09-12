@@ -107,8 +107,12 @@ class KunuzViewModel(
         }
     }
 
-    fun selectChapter(chapterId: ChapterId?) {
-        mutate { it.copy(selectedChapter = chapterId, tab = TabId.ALL) }
+    fun selectChapter(chapterId: ChapterId?, forceAllTab: Boolean = true) {
+        if (forceAllTab) {
+            mutate { it.copy(selectedChapter = chapterId, tab = TabId.ALL) }
+        } else {
+            mutate { it.copy(selectedChapter = chapterId) }
+        }
     }
 
     fun selectTag(tag: String?) {
@@ -124,8 +128,10 @@ class KunuzViewModel(
     }
 
     fun toggleFavorite(id: Int) {
-        val current = _uiState.value.favorites
-        mutate { it.copy(favorites = if (id in current) current - id else current + id) }
+        mutate { state ->
+            val has = id in state.favorites
+            state.copy(favorites = if (has) state.favorites - id else state.favorites + id)
+        }
         scope.launch { favoritesRepository.toggle(id) }
     }
 

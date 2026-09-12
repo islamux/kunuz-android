@@ -140,6 +140,7 @@ fun TreasureCard(
                 if (treasure.repeatCount != null && treasure.repeatCount > 1) {
                     RepeatCounterBlock(
                         treasure = treasure,
+                        repeatCount = treasure.repeatCount ?: 0,
                         counter = counter,
                         onIncrement = { counter += 1 },
                         onOpenTasbeeh = onOpenTasbeeh
@@ -356,11 +357,12 @@ private fun CitationLabel(label: String, value: String) {
 @Composable
 private fun RepeatCounterBlock(
     treasure: Treasure,
+    repeatCount: Int,
     counter: Int,
     onIncrement: () -> Unit,
     onOpenTasbeeh: (Treasure) -> Unit
 ) {
-    val isDone = counter >= treasure.repeatCount!!
+    val isDone = counter >= repeatCount
     Surface(
         modifier = Modifier
             .fillMaxWidth()
@@ -382,7 +384,7 @@ private fun RepeatCounterBlock(
                     contentAlignment = Alignment.Center
                 ) {
                     Text(
-                        text = "${treasure.repeatCount}x",
+                        text = "${repeatCount}x",
                         color = Color.White,
                         fontSize = 12.sp,
                         fontWeight = FontWeight.Bold
@@ -391,13 +393,13 @@ private fun RepeatCounterBlock(
                 Spacer(Modifier.width(8.dp))
                 Column {
                     Text(
-                        text = "ورد التكرار النبوي: ${treasure.repeatCount} مرة",
+                        text = "ورد التكرار النبوي: $repeatCount مرة",
                         fontSize = 12.sp,
                         fontWeight = FontWeight.Bold,
                         color = KunuzGreenDark
                     )
                     Text(
-                        text = "أنجزت: $counter من ${treasure.repeatCount}",
+                        text = "أنجزت: $counter من $repeatCount",
                         fontSize = 11.sp,
                         color = KunuzPrimary
                     )
