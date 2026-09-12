@@ -62,6 +62,23 @@ class TasbeehScreenTest {
     }
 
     @Test
+    fun `reset button clears the count back to zero`() {
+        composeRule.setContent {
+            KunuzTheme {
+                TasbeehScreen(treasure = null, onClose = {})
+            }
+        }
+        composeRule.waitForIdle()
+        composeRule.onNodeWithTag("tasbeeh-tap-area").performClick()
+        composeRule.onNodeWithTag("tasbeeh-tap-area").performClick()
+        composeRule.waitForIdle()
+        composeRule.onNodeWithText("2").assertExists()
+        composeRule.onNodeWithTag("tasbeeh-reset").performClick()
+        composeRule.waitForIdle()
+        composeRule.onNodeWithText("0").assertExists()
+    }
+
+    @Test
     fun `shows the treasure id in the summary card when a treasure is provided`() {
         composeRule.setContent {
             KunuzTheme {

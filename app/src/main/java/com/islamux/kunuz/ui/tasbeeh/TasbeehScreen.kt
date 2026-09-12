@@ -188,8 +188,8 @@ private fun TasbeehHeader(onClose: () -> Unit) {
         }
         Box(
             modifier = Modifier
-.size(32.dp)
-                    .clip(RoundedCornerShape(16.dp))
+                .size(32.dp)
+                .clip(RoundedCornerShape(16.dp))
                 .clickable(onClick = onClose)
                 .testTag("tasbeeh-close"),
             contentAlignment = Alignment.Center

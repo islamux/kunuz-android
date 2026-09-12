@@ -10,7 +10,7 @@ object Tasbeeh {
         Event(
             sound = soundEnabled,
             haptic = true,
-            confetti = newCount >= target
+            confetti = newCount == target
         )
 
     fun defaultTarget(treasure: Treasure?): Int = treasure?.repeatCount ?: 33

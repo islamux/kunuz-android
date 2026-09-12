@@ -54,6 +54,12 @@ class TasbeehTest {
     }
 
     @Test
+    fun `confetti fires only once at target not beyond`() {
+        val event = Tasbeeh.eventAfterIncrement(newCount = 34, target = 33, soundEnabled = true)
+        assertFalse(event.confetti)
+    }
+
+    @Test
     fun `default target falls back to thirty three with no repeat count`() {
         assertEquals(33, Tasbeeh.defaultTarget(null))
         assertEquals(33, Tasbeeh.defaultTarget(treasure.copy(repeatCount = null)))

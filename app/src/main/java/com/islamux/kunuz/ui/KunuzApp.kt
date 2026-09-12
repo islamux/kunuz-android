@@ -125,9 +125,7 @@ fun KunuzApp(viewModel: KunuzViewModel, modifier: Modifier = Modifier) {
                             viewModel = viewModel
                         )
 
-                        TabId.TASBEEH -> TasbeehPlaceholderTab()
-
-                        TabId.CHECKLIST -> ComingSoonTab()
+                        TabId.TASBEEH, TabId.CHECKLIST -> ComingSoonTab()
                     }
                 }
             }
@@ -365,50 +363,6 @@ private fun KunuzBottomNav(
                     unselectedTextColor = Color(0xFF6B7280)
                 )
             )
-        }
-    }
-}
-
-@Composable
-private fun TasbeehPlaceholderTab(modifier: Modifier = Modifier) {
-    Box(
-        modifier = modifier
-            .fillMaxSize()
-            .padding(24.dp),
-        contentAlignment = Alignment.Center
-    ) {
-        Surface(
-            modifier = Modifier
-                .fillMaxWidth()
-                .testTag("tasbeeh-placeholder-tab"),
-            shape = RoundedCornerShape(20.dp),
-            color = Color.White,
-            border = BorderStroke(1.dp, KunuzBorder)
-        ) {
-            Column(
-                modifier = Modifier.padding(horizontal = 24.dp, vertical = 40.dp),
-                horizontalAlignment = Alignment.CenterHorizontally
-            ) {
-                Icon(
-                    imageVector = Lucide.Compass,
-                    contentDescription = null,
-                    tint = KunuzPrimary,
-                    modifier = Modifier.size(32.dp)
-                )
-                Spacer(Modifier.height(12.dp))
-                Text(
-                    text = "المسبحة والعداد التفاعلي",
-                    fontSize = 18.sp,
-                    fontWeight = FontWeight.Bold,
-                    color = KunuzText
-                )
-                Spacer(Modifier.height(6.dp))
-                Text(
-                    text = "افتح كنزاً واضغط على زر المسبحة لبدء العدّ.",
-                    fontSize = 13.sp,
-                    color = Color(0xFF6B7280)
-                )
-            }
         }
     }
 }
