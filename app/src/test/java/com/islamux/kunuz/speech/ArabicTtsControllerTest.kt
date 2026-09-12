@@ -1,6 +1,7 @@
 package com.islamux.kunuz.speech
 
 import android.content.Context
+import android.os.Bundle
 import android.os.Looper
 import android.speech.tts.TextToSpeech
 import java.util.Locale
@@ -131,5 +132,33 @@ class ArabicTtsControllerTest {
         idleMainLooper()
 
         assertFalse(controller.isSpeaking.first())
+    }
+
+    @Test
+    fun `speak when engine returns error returns false and stays silent`() {
+        val stubEngine = object : TtsEngine {
+            override val isReady: Boolean = true
+
+            override fun setCallbacks(
+                onReady: () -> Unit,
+                onUtteranceStart: () -> Unit,
+                onUtteranceDone: () -> Unit,
+                onUtteranceError: () -> Unit,
+            ) = Unit
+
+            override fun speak(
+                text: String,
+                queueMode: Int,
+                params: Bundle,
+                utteranceId: String,
+            ): Int = TextToSpeech.ERROR
+
+            override fun stop(): Int = TextToSpeech.SUCCESS
+            override fun shutdown() = Unit
+        }
+        val controller = ArabicTtsController(context, stubEngine)
+
+        assertFalse(controller.speak("حديث"))
+        assertFalse(controller.isSpeaking.value)
     }
 }
