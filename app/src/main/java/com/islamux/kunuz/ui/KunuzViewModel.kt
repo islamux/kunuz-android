@@ -5,6 +5,7 @@ import com.islamux.kunuz.data.DailyTasksRepository
 import com.islamux.kunuz.data.FavoritesRepository
 import com.islamux.kunuz.data.SettingsRepository
 import com.islamux.kunuz.data.TreasuresRepository
+import com.islamux.kunuz.data.model.Chapter
 import com.islamux.kunuz.data.model.ChapterId
 import com.islamux.kunuz.data.model.FontSize
 import com.islamux.kunuz.data.model.TabId
@@ -45,6 +46,11 @@ class KunuzViewModel(
 ) : ViewModel() {
 
     val dailyTreasure: Treasure = treasuresRepository.getDailyTreasure()
+
+    val chapters: List<Chapter> = treasuresRepository.chapters
+    val chapterCounts: Map<ChapterId, Int> = treasuresRepository.chapterCounts
+    val totalTreasures: Int = treasuresRepository.total
+    val chapterById: Map<ChapterId, Chapter> = chapters.associateBy { it.id }
 
     private val initialState = KunuzUiState(dailyTreasure = dailyTreasure)
 
