@@ -17,7 +17,8 @@ class SunnahTaskTest {
     )
 
     @Test
-    fun `default task ids match the web list exactly in order`() {
+    fun `default tasks match the web table byte for byte`() {
+        assertEquals(webRows, DEFAULT_DAILY_TASKS)
         assertEquals(
             listOf(
                 "morning-dhikr",
@@ -31,10 +32,5 @@ class SunnahTaskTest {
             ),
             DEFAULT_DAILY_TASKS.map { it.id }
         )
-    }
-
-    @Test
-    fun `default tasks match the web table byte for byte`() {
-        assertEquals(webRows, DEFAULT_DAILY_TASKS)
     }
 }

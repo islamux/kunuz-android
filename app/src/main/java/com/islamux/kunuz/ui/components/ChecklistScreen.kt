@@ -49,6 +49,7 @@ import com.composables.icons.lucide.RotateCcw
 import com.composables.icons.lucide.X
 import com.islamux.kunuz.data.model.DEFAULT_DAILY_TASKS
 import com.islamux.kunuz.data.model.SunnahTask
+import com.islamux.kunuz.logic.countCompleted
 import com.islamux.kunuz.ui.theme.AmiriFontFamily
 
 private val ChecklistHeaderStart = Color(0xFF047857)
@@ -84,7 +85,7 @@ fun ChecklistScreen(
 ) {
     val confettiController = remember { ConfettiController() }
     val taskIds = DEFAULT_DAILY_TASKS.map { it.id }
-    val completedCount = tasks.values.count { it }
+    val completedCount = countCompleted(tasks)
     val allDone = taskIds.all { tasks[it] == true }
     var wasAllDone by remember { mutableStateOf(allDone) }
 

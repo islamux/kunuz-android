@@ -7,6 +7,7 @@ import androidx.compose.ui.test.junit4.createComposeRule
 import androidx.compose.ui.test.onNodeWithTag
 import androidx.compose.ui.test.onNodeWithText
 import androidx.compose.ui.test.performClick
+import androidx.compose.ui.test.performScrollTo
 import com.islamux.kunuz.data.model.DEFAULT_DAILY_TASKS
 import com.islamux.kunuz.ui.theme.KunuzTheme
 import org.junit.Assert.assertEquals
@@ -91,6 +92,33 @@ class ChecklistScreenTest {
     }
 
     @Test
+    fun `completing all eight tasks shows full progress`() {
+        var tasks by mutableStateOf(emptyMap<String, Boolean>())
+        composeRule.setContent {
+            KunuzTheme {
+                ChecklistScreen(
+                    tasks = tasks,
+                    streak = 1,
+                    onToggle = { id -> tasks = tasks + (id to true) },
+                    onReset = { tasks = emptyMap() },
+                    onClose = {}
+                )
+            }
+        }
+        composeRule.waitForIdle()
+
+        DEFAULT_DAILY_TASKS.forEach { task ->
+            composeRule.onNodeWithTag("checklist-task-${task.id}")
+                .performScrollTo()
+                .performClick()
+            composeRule.waitForIdle()
+        }
+
+        composeRule.onNodeWithText("إنجاز اليوم: 8 من 8 سنن", substring = true).assertExists()
+        composeRule.onNodeWithText("100%").assertExists()
+    }
+
+    @Test
     fun `reset button invokes onReset`() {
         var resetClicked = false
         setScreen(
@@ -111,3 +139,5 @@ class ChecklistScreenTest {
         composeRule.onNodeWithText("حماسة 5 أيام").assertExists()
     }
 }
+
+
