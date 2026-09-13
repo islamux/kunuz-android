@@ -1,5 +1,11 @@
 package com.islamux.kunuz.ui.components
 
+import androidx.compose.animation.AnimatedVisibility
+import androidx.compose.animation.animateContentSize
+import androidx.compose.animation.expandVertically
+import androidx.compose.animation.fadeIn
+import androidx.compose.animation.fadeOut
+import androidx.compose.animation.shrinkVertically
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
@@ -111,7 +117,9 @@ fun TreasureCard(
         color = KunuzCardSurface,
         border = BorderStroke(1.dp, KunuzBorder)
     ) {
-        Column {
+        Column(
+            modifier = Modifier.animateContentSize()
+        ) {
             Column(
                 modifier = Modifier.padding(horizontal = 16.dp, vertical = 16.dp)
             ) {
@@ -531,7 +539,11 @@ private fun ExplanationBlock(
         )
     }
 
-    if (expanded) {
+    AnimatedVisibility(
+        visible = expanded,
+        enter = expandVertically() + fadeIn(),
+        exit = shrinkVertically() + fadeOut()
+    ) {
         Text(
             text = treasure.explanation,
             fontSize = 13.sp,
