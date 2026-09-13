@@ -51,6 +51,7 @@ import com.islamux.kunuz.ui.components.AboutDialog
 import com.islamux.kunuz.ui.components.ActiveFiltersBar
 import com.islamux.kunuz.ui.components.ChapterChips
 import com.islamux.kunuz.ui.components.ChaptersGrid
+import com.islamux.kunuz.ui.components.ChecklistScreen
 import com.islamux.kunuz.ui.components.DailyTreasureModal
 import com.islamux.kunuz.ui.components.FavoritesHeader
 import com.islamux.kunuz.ui.components.HeroBanner
@@ -67,6 +68,8 @@ import com.islamux.kunuz.ui.theme.KunuzText
 fun KunuzApp(viewModel: KunuzViewModel, modifier: Modifier = Modifier) {
     val uiState by viewModel.uiState.collectAsState()
     val treasures by viewModel.filteredTreasures.collectAsState()
+    val dailyTasks by viewModel.dailyTasks.collectAsState()
+    val checklistStreak by viewModel.checklistStreak.collectAsState()
 
     Scaffold(
         modifier = modifier.fillMaxSize(),
@@ -153,9 +156,11 @@ fun KunuzApp(viewModel: KunuzViewModel, modifier: Modifier = Modifier) {
     }
 
     if (uiState.showChecklist) {
-        ComingSoonDialog(
-            title = "الورد اليومي",
-            body = "جدول الورد اليومي سيكون متاحاً في الخطوات القادمة.",
+        ChecklistScreen(
+            tasks = dailyTasks,
+            streak = checklistStreak,
+            onToggle = viewModel::toggleTask,
+            onReset = viewModel::resetTodayTasks,
             onClose = viewModel::closeChecklist
         )
     }
@@ -471,3 +476,4 @@ private fun ComingSoonDialog(title: String, body: String, onClose: () -> Unit) {
         }
     }
 }
+

@@ -10,12 +10,16 @@ import com.islamux.kunuz.data.TreasuresRepository
 import com.islamux.kunuz.data.model.ChapterId
 import com.islamux.kunuz.data.model.FontSize
 import com.islamux.kunuz.data.model.TabId
+import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.first
+import kotlinx.coroutines.test.TestScope
 import kotlinx.coroutines.test.UnconfinedTestDispatcher
+import kotlinx.coroutines.test.advanceUntilIdle
 import kotlinx.coroutines.test.runTest
 import org.junit.Assert.assertEquals
+import org.junit.Assert.assertFalse
 import org.junit.Assert.assertNotEquals
 import org.junit.Assert.assertNotNull
 import org.junit.Assert.assertNull
@@ -40,19 +44,22 @@ class KunuzViewModelTest {
 
     private val treasuresRepository = TreasuresRepository(RuntimeEnvironment.getApplication())
 
-    private fun createDataStore(): DataStore<Preferences> =
+    private fun createDataStore(dispatcher: CoroutineDispatcher = testDispatcher): DataStore<Preferences> =
         PreferenceDataStoreFactory.create(
-            scope = CoroutineScope(testDispatcher),
+            scope = CoroutineScope(dispatcher),
             produceFile = { tmpFolder.newFile("preferences.preferences_pb") }
         )
 
-    private fun createViewModel(store: DataStore<Preferences>): KunuzViewModel =
+    private fun createViewModel(
+        store: DataStore<Preferences>,
+        dispatcher: CoroutineDispatcher = testDispatcher
+    ): KunuzViewModel =
         KunuzViewModel(
             favoritesRepository = FavoritesRepository(store),
             dailyTasksRepository = DailyTasksRepository(store),
             settingsRepository = SettingsRepository(store),
             treasuresRepository = treasuresRepository,
-            scope = CoroutineScope(testDispatcher)
+            scope = CoroutineScope(dispatcher)
         )
 
     @Test
@@ -245,5 +252,89 @@ class KunuzViewModelTest {
         val vm = createViewModel(store)
 
         assertTrue(vm.uiState.value.favorites.contains(5))
+    }
+
+    @Test
+    fun `toggleTask persists and updates the daily tasks flows`() = runTest {
+        val dispatcher = UnconfinedTestDispatcher(testScheduler)
+        val store = createDataStore(dispatcher)
+        val dailyTasksRepository = DailyTasksRepository(store)
+        val vm = createViewModel(store, dispatcher)
+
+        vm.toggleTask("morning-dhikr")
+        testScheduler.advanceUntilIdle()
+
+        assertTrue(vm.dailyTasks.value["morning-dhikr"] == true)
+        assertTrue(dailyTasksRepository.todayTasks.first()["morning-dhikr"] == true)
+
+        vm.toggleTask("morning-dhikr")
+        testScheduler.advanceUntilIdle()
+
+        assertFalse(vm.dailyTasks.value["morning-dhikr"] == true)
+        assertTrue(dailyTasksRepository.todayTasks.first() == mapOf("morning-dhikr" to false))
+    }
+
+    @Test
+    fun `toggling the final missing task records the streak completion`() = runTest {
+        val dispatcher = UnconfinedTestDispatcher(testScheduler)
+        val store = createDataStore(dispatcher)
+        val dailyTasksRepository = DailyTasksRepository(store)
+        val vm = createViewModel(store, dispatcher)
+
+        vm.toggleTask("morning-dhikr")
+        vm.toggleTask("evening-dhikr")
+        vm.toggleTask("salat-duha")
+        vm.toggleTask("ayat-kursi")
+        vm.toggleTask("istighfar-100")
+        vm.toggleTask("salawat-nabi")
+        vm.toggleTask("daily-charity")
+        testScheduler.advanceUntilIdle()
+
+        assertEquals(0, vm.checklistStreak.value)
+
+        vm.toggleTask("salat-witr")
+        testScheduler.advanceUntilIdle()
+
+        assertEquals(1, dailyTasksRepository.streak.first())
+        assertEquals(1, vm.checklistStreak.value)
+    }
+
+    @Test
+    fun `resetTodayTasks clears the completed tasks`() = runTest {
+        val dispatcher = UnconfinedTestDispatcher(testScheduler)
+        val store = createDataStore(dispatcher)
+        val dailyTasksRepository = DailyTasksRepository(store)
+        val vm = createViewModel(store, dispatcher)
+        vm.toggleTask("morning-dhikr")
+        vm.toggleTask("salat-witr")
+        testScheduler.advanceUntilIdle()
+        assertTrue(vm.dailyTasks.value.isNotEmpty())
+
+        vm.resetTodayTasks()
+        testScheduler.advanceUntilIdle()
+
+        assertTrue(vm.dailyTasks.value.isEmpty())
+        assertTrue(dailyTasksRepository.todayTasks.first().isEmpty())
+    }
+
+    @Test
+    fun `seeded daily tasks and streak from datastore populate initial state`() = runTest {
+        val dispatcher = UnconfinedTestDispatcher(testScheduler)
+        val store = createDataStore(dispatcher)
+        val dailyTasksRepository = DailyTasksRepository(store)
+        val allIds = listOf(
+            "morning-dhikr", "evening-dhikr", "salat-duha", "ayat-kursi",
+            "istighfar-100", "salawat-nabi", "daily-charity", "salat-witr"
+        )
+        val allDone = allIds.associateWith { true }
+        dailyTasksRepository.setAll(mapOf("morning-dhikr" to true))
+        dailyTasksRepository.recordStreakOnCompletion(allIds, allDone)
+        testScheduler.advanceUntilIdle()
+
+        val vm = createViewModel(store, dispatcher)
+        testScheduler.advanceUntilIdle()
+
+        assertEquals(mapOf("morning-dhikr" to true), vm.dailyTasks.value)
+        assertEquals(1, vm.checklistStreak.value)
     }
 }

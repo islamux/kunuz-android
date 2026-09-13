@@ -7,6 +7,7 @@ import com.islamux.kunuz.data.SettingsRepository
 import com.islamux.kunuz.data.TreasuresRepository
 import com.islamux.kunuz.data.model.Chapter
 import com.islamux.kunuz.data.model.ChapterId
+import com.islamux.kunuz.data.model.DEFAULT_DAILY_TASKS
 import com.islamux.kunuz.data.model.FontSize
 import com.islamux.kunuz.data.model.TabId
 import com.islamux.kunuz.data.model.Treasure
@@ -60,6 +61,12 @@ class KunuzViewModel(
     val uiState: StateFlow<KunuzUiState> = _uiState.asStateFlow()
     val filteredTreasures: StateFlow<List<Treasure>> = _filteredTreasures.asStateFlow()
 
+    private val _dailyTasks = MutableStateFlow<Map<String, Boolean>>(emptyMap())
+    val dailyTasks: StateFlow<Map<String, Boolean>> = _dailyTasks.asStateFlow()
+
+    private val _checklistStreak = MutableStateFlow(0)
+    val checklistStreak: StateFlow<Int> = _checklistStreak.asStateFlow()
+
     init {
         seedFromRepositories()
         observeRepositories()
@@ -70,6 +77,10 @@ class KunuzViewModel(
             val favorites = favoritesRepository.favorites.first()
             val fontSize = settingsRepository.fontSize.first()
             val showTashkeel = settingsRepository.showTashkeel.first()
+            val tasks = dailyTasksRepository.todayTasks.first()
+            val streak = dailyTasksRepository.streak.first()
+            _dailyTasks.value = tasks
+            _checklistStreak.value = streak
             mutate { it.copy(favorites = favorites, fontSize = fontSize, showTashkeel = showTashkeel) }
         }
     }
@@ -83,6 +94,12 @@ class KunuzViewModel(
         }
         scope.launch {
             settingsRepository.showTashkeel.drop(1).collect { tash -> mutate { it.copy(showTashkeel = tash) } }
+        }
+        scope.launch {
+            dailyTasksRepository.todayTasks.drop(1).collect { tasks -> _dailyTasks.value = tasks }
+        }
+        scope.launch {
+            dailyTasksRepository.streak.drop(1).collect { streak -> _checklistStreak.value = streak }
         }
     }
 
@@ -167,6 +184,23 @@ class KunuzViewModel(
     fun closeShare() = mutate { it.copy(shareTreasure = null) }
     fun openTasbeeh(treasure: Treasure) = mutate { it.copy(tasbeehTreasure = treasure) }
     fun closeTasbeeh() = mutate { it.copy(tasbeehTreasure = null) }
+
+    fun toggleTask(taskId: String) {
+        val next = _dailyTasks.value.toMutableMap().apply {
+            this[taskId] = !(this[taskId] ?: false)
+        }
+        _dailyTasks.value = next
+        scope.launch { dailyTasksRepository.setAll(next) }
+        if (DEFAULT_DAILY_TASKS.all { next[it.id] == true }) {
+            val taskIds = DEFAULT_DAILY_TASKS.map { it.id }
+            scope.launch { dailyTasksRepository.recordStreakOnCompletion(taskIds, next) }
+        }
+    }
+
+    fun resetTodayTasks() {
+        _dailyTasks.value = emptyMap()
+        scope.launch { dailyTasksRepository.setAll(emptyMap()) }
+    }
 }
 
 private fun FontSize.next(): FontSize {
