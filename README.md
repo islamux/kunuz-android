@@ -4,7 +4,7 @@ Native Android port of the [Kunuz](https://github.com/KunuzApp/Kunuz) web applic
 
 ## Features
 
-- **140 authenticated treasures** organized into 10 thematic chapters
+- **140 authenticated treasures** organized into 9 thematic chapters
 - **Full-text search** with Arabic normalization (tashkeel-insensitive matching)
 - **Favorites** — mark and filter saved treasures (persisted via DataStore)
 - **Chapter navigation** — browse by chapter with icon badges
