@@ -12,5 +12,5 @@ dependencyResolutionManagement {
         mavenCentral()
     }
 }
-rootProject.name = "kunuz-android"
+rootProject.name = "kunuz"
 include(":app")
