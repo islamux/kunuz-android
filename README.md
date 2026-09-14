@@ -40,7 +40,7 @@ keyAlias=kunuz
 keyPassword=<key password>
 ```
 
-`assembleRelease` fails with a clear message if `keystore.properties` is missing. The keystore itself must never be committed.
+`assembleRelease` signs with the release keystore when `keystore.properties` is present; without it the release build assembles an **unsigned** `app-release-unsigned.apk`. The keystore itself must never be committed.
 
 Requirements: JDK 17, Android SDK (compileSdk 36, minSdk 26).
 
