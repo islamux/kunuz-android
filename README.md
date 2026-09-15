@@ -2,6 +2,10 @@
 
 Native Android port of the [Kunuz](https://github.com/islamux/kunuz) web application — a curated Arabic hadith reference app containing 140 prophetic treasures (*kanuz*), extracted and authenticated from the chains of Sheikh Mahmoud al-Masri.
 
+## Download
+
+Grab the signed APK from the [releases page](https://github.com/islamux/kunuz-android/releases) — see [v1.0.0](https://github.com/islamux/kunuz-android/releases/tag/v1.0.0) for the latest stable build (`app-release.apk`, minSdk 26).
+
 ## Features
 
 - **140 authenticated treasures** organized into 9 thematic chapters
